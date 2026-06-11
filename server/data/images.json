@@ -340,5 +340,156 @@
     "createdAt": 1781143619200,
     "updatedAt": 1781143619200,
     "hash": "img_k8kk5n_ei"
+  },
+  {
+    "id": "10232a31-d1dc-4f09-9050-07c40a65f62e",
+    "filename": "10232a31-d1dc-4f09-9050-07c40a65f62e.jpg",
+    "originalName": "ScreenShot_2026-06-06_192724_336.png",
+    "path": "/Volumes/代码/solo/lp0025/server/uploads/10232a31-d1dc-4f09-9050-07c40a65f62e.jpg",
+    "thumbnailPath": "/Volumes/代码/solo/lp0025/server/uploads/thumbnails/10232a31-d1dc-4f09-9050-07c40a65f62e_thumb.jpg",
+    "mimeType": "image/jpeg",
+    "size": 25988,
+    "width": 414,
+    "height": 264,
+    "tags": [
+      {
+        "name": "红色",
+        "confidence": 0.847370096521953,
+        "category": "color"
+      },
+      {
+        "name": "写实",
+        "confidence": 0.65,
+        "category": "style"
+      },
+      {
+        "name": "汽车",
+        "confidence": 0.5726924787593723,
+        "category": "object"
+      },
+      {
+        "name": "建筑",
+        "confidence": 0.5585948807894172,
+        "category": "object"
+      },
+      {
+        "name": "摄影",
+        "confidence": 0.55,
+        "category": "style"
+      },
+      {
+        "name": "山脉",
+        "confidence": 0.52,
+        "category": "scene"
+      }
+    ],
+    "description": "画面以红色、写实、汽车为主，呈现写实的视觉风格",
+    "categories": [
+      "山脉",
+      "建筑"
+    ],
+    "userTags": [],
+    "createdAt": 1781145792310,
+    "updatedAt": 1781145792310,
+    "hash": "img_v0if6u_4dee"
+  },
+  {
+    "id": "d17e8365-65e7-4e1e-ba85-d6d8c52d56e3",
+    "filename": "d17e8365-65e7-4e1e-ba85-d6d8c52d56e3.jpg",
+    "originalName": "ScreenShot_2026-06-06_192648_072.png",
+    "path": "/Volumes/代码/solo/lp0025/server/uploads/d17e8365-65e7-4e1e-ba85-d6d8c52d56e3.jpg",
+    "thumbnailPath": "/Volumes/代码/solo/lp0025/server/uploads/thumbnails/d17e8365-65e7-4e1e-ba85-d6d8c52d56e3_thumb.jpg",
+    "mimeType": "image/jpeg",
+    "size": 37577,
+    "width": 614,
+    "height": 490,
+    "tags": [
+      {
+        "name": "橙色",
+        "confidence": 0.8714678882404485,
+        "category": "color"
+      },
+      {
+        "name": "食物",
+        "confidence": 0.78,
+        "category": "object"
+      },
+      {
+        "name": "白色",
+        "confidence": 0.7415303882404486,
+        "category": "color"
+      },
+      {
+        "name": "写实",
+        "confidence": 0.65,
+        "category": "style"
+      },
+      {
+        "name": "摄影",
+        "confidence": 0.55,
+        "category": "style"
+      },
+      {
+        "name": "户外",
+        "confidence": 0.52,
+        "category": "scene"
+      }
+    ],
+    "description": "展现了户外中的橙色、食物、白色元素",
+    "categories": [
+      "户外",
+      "食物"
+    ],
+    "userTags": [],
+    "createdAt": 1781150718129,
+    "updatedAt": 1781150718129,
+    "hash": "img_tuw9i0_81sx"
+  },
+  {
+    "id": "132bee35-396a-4fdf-bb1c-f4845019cd54",
+    "filename": "132bee35-396a-4fdf-bb1c-f4845019cd54.jpg",
+    "originalName": "æªæ é¢-1.png",
+    "path": "/Volumes/代码/solo/lp0025/server/uploads/132bee35-396a-4fdf-bb1c-f4845019cd54.jpg",
+    "thumbnailPath": "/Volumes/代码/solo/lp0025/server/uploads/thumbnails/132bee35-396a-4fdf-bb1c-f4845019cd54_thumb.jpg",
+    "mimeType": "image/jpeg",
+    "size": 60894,
+    "width": 1080,
+    "height": 6103,
+    "tags": [
+      {
+        "name": "白色",
+        "confidence": 0.9500130663860317,
+        "category": "color"
+      },
+      {
+        "name": "雪景",
+        "confidence": 0.92,
+        "category": "scene"
+      },
+      {
+        "name": "简约",
+        "confidence": 0.7,
+        "category": "style"
+      },
+      {
+        "name": "现代",
+        "confidence": 0.58,
+        "category": "style"
+      },
+      {
+        "name": "家具",
+        "confidence": 0.5,
+        "category": "object"
+      }
+    ],
+    "description": "这是一张包含白色、雪景、简约的雪景照片",
+    "categories": [
+      "雪景",
+      "家具"
+    ],
+    "userTags": [],
+    "createdAt": 1781150753035,
+    "updatedAt": 1781150753035,
+    "hash": "img_yx7idn_1jk6o"
   }
 ]
