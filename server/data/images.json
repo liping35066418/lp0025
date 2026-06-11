@@ -1,0 +1,344 @@
+[
+  {
+    "id": "c947bf84-0376-407e-b1df-9e7e7c793f6c",
+    "filename": "c947bf84-0376-407e-b1df-9e7e7c793f6c.jpg",
+    "originalName": "1111_cartoon.png",
+    "path": "/Volumes/代码/solo/lp0025/server/uploads/c947bf84-0376-407e-b1df-9e7e7c793f6c.jpg",
+    "thumbnailPath": "/Volumes/代码/solo/lp0025/server/uploads/thumbnails/c947bf84-0376-407e-b1df-9e7e7c793f6c_thumb.jpg",
+    "mimeType": "image/jpeg",
+    "size": 34657,
+    "width": 526,
+    "height": 528,
+    "tags": [
+      {
+        "name": "灰色",
+        "confidence": 0.9203189300411523,
+        "category": "color"
+      },
+      {
+        "name": "复古",
+        "confidence": 0.8985206618655692,
+        "category": "style"
+      },
+      {
+        "name": "运动器材",
+        "confidence": 0.8708634259259259,
+        "category": "object"
+      },
+      {
+        "name": "华丽",
+        "confidence": 0.8646384173525378,
+        "category": "style"
+      },
+      {
+        "name": "山脉",
+        "confidence": 0.8613906035665295,
+        "category": "scene"
+      },
+      {
+        "name": "电子产品",
+        "confidence": 0.7827690329218107,
+        "category": "object"
+      },
+      {
+        "name": "多彩",
+        "confidence": 0.7587835648148148,
+        "category": "color"
+      },
+      {
+        "name": "动物",
+        "confidence": 0.60719045781893,
+        "category": "object"
+      },
+      {
+        "name": "办公室",
+        "confidence": 0.5959979423868313,
+        "category": "scene"
+      }
+    ],
+    "description": "展现了办公室中的灰色、复古、运动器材元素",
+    "categories": [
+      "户外",
+      "电子产品",
+      "办公室",
+      "山脉"
+    ],
+    "userTags": [],
+    "createdAt": 1781141240065,
+    "updatedAt": 1781141276624,
+    "hash": "img_f041sl_31d2"
+  },
+  {
+    "id": "8860af9c-136e-452f-bbcf-1944774c220f",
+    "filename": "8860af9c-136e-452f-bbcf-1944774c220f.jpg",
+    "originalName": "1111_styled (1).png",
+    "path": "/Volumes/代码/solo/lp0025/server/uploads/8860af9c-136e-452f-bbcf-1944774c220f.jpg",
+    "thumbnailPath": "/Volumes/代码/solo/lp0025/server/uploads/thumbnails/8860af9c-136e-452f-bbcf-1944774c220f_thumb.jpg",
+    "mimeType": "image/jpeg",
+    "size": 35366,
+    "width": 526,
+    "height": 528,
+    "tags": [
+      {
+        "name": "电子产品",
+        "confidence": 0.845716049382716,
+        "category": "object"
+      },
+      {
+        "name": "写实",
+        "confidence": 0.8303465792181071,
+        "category": "style"
+      },
+      {
+        "name": "粉色",
+        "confidence": 0.8289678497942387,
+        "category": "color"
+      },
+      {
+        "name": "动物",
+        "confidence": 0.7420203189300412,
+        "category": "object"
+      },
+      {
+        "name": "食物",
+        "confidence": 0.6873905606995885,
+        "category": "object"
+      },
+      {
+        "name": "建筑",
+        "confidence": 0.6834016203703703,
+        "category": "object"
+      },
+      {
+        "name": "户外",
+        "confidence": 0.5534996570644719,
+        "category": "scene"
+      }
+    ],
+    "description": "这是一张包含电子产品、写实、粉色的户外照片的范德萨发 ",
+    "categories": [
+      "户外",
+      "电子产品",
+      "办公室",
+      "山脉",
+      "夜景"
+    ],
+    "userTags": [],
+    "createdAt": 1781141260560,
+    "updatedAt": 1781141291767,
+    "hash": "img_qu89cq_bojp"
+  },
+  {
+    "id": "94211184-b767-4a85-9411-ac4ac0d71a53",
+    "filename": "94211184-b767-4a85-9411-ac4ac0d71a53.jpg",
+    "originalName": "test_solid_red.jpg",
+    "path": "/Volumes/代码/solo/lp0025/server/uploads/94211184-b767-4a85-9411-ac4ac0d71a53.jpg",
+    "thumbnailPath": "/Volumes/代码/solo/lp0025/server/uploads/thumbnails/94211184-b767-4a85-9411-ac4ac0d71a53_thumb.jpg",
+    "mimeType": "image/jpeg",
+    "size": 888,
+    "width": 200,
+    "height": 200,
+    "tags": [
+      {
+        "name": "红色",
+        "confidence": 0.78,
+        "category": "color"
+      },
+      {
+        "name": "简约",
+        "confidence": 0.7,
+        "category": "style"
+      },
+      {
+        "name": "现代",
+        "confidence": 0.58,
+        "category": "style"
+      },
+      {
+        "name": "人物",
+        "confidence": 0.5213130672112393,
+        "category": "object"
+      },
+      {
+        "name": "户外",
+        "confidence": 0.52,
+        "category": "scene"
+      }
+    ],
+    "description": "画面以红色、简约、现代为主，呈现简约的视觉风格",
+    "categories": [
+      "户外",
+      "人物"
+    ],
+    "userTags": [],
+    "createdAt": 1781143014576,
+    "updatedAt": 1781143014576,
+    "hash": "img_v4mmow_ej"
+  },
+  {
+    "id": "e9e1626c-ccff-4c96-b599-045ac8335a92",
+    "filename": "e9e1626c-ccff-4c96-b599-045ac8335a92.jpg",
+    "originalName": "test_colorful.jpg",
+    "path": "/Volumes/代码/solo/lp0025/server/uploads/e9e1626c-ccff-4c96-b599-045ac8335a92.jpg",
+    "thumbnailPath": "/Volumes/代码/solo/lp0025/server/uploads/thumbnails/e9e1626c-ccff-4c96-b599-045ac8335a92_thumb.jpg",
+    "mimeType": "image/jpeg",
+    "size": 3211,
+    "width": 300,
+    "height": 200,
+    "tags": [
+      {
+        "name": "灰色",
+        "confidence": 0.88,
+        "category": "color"
+      },
+      {
+        "name": "复古",
+        "confidence": 0.68,
+        "category": "style"
+      },
+      {
+        "name": "摄影",
+        "confidence": 0.62,
+        "category": "style"
+      },
+      {
+        "name": "建筑",
+        "confidence": 0.5819222375142445,
+        "category": "object"
+      },
+      {
+        "name": "汽车",
+        "confidence": 0.5697933079894103,
+        "category": "object"
+      },
+      {
+        "name": "室内",
+        "confidence": 0.55,
+        "category": "scene"
+      }
+    ],
+    "description": "画面以灰色、复古、摄影为主，呈现复古的视觉风格",
+    "categories": [
+      "室内",
+      "建筑"
+    ],
+    "userTags": [],
+    "createdAt": 1781143043765,
+    "updatedAt": 1781143043765,
+    "hash": "img_dl4pa6_229"
+  },
+  {
+    "id": "f9f8fa4b-28b3-4026-807f-137608e6bd93",
+    "filename": "f9f8fa4b-28b3-4026-807f-137608e6bd93.jpg",
+    "originalName": "test_vibrant.jpg",
+    "path": "/Volumes/代码/solo/lp0025/server/uploads/f9f8fa4b-28b3-4026-807f-137608e6bd93.jpg",
+    "thumbnailPath": "/Volumes/代码/solo/lp0025/server/uploads/thumbnails/f9f8fa4b-28b3-4026-807f-137608e6bd93_thumb.jpg",
+    "mimeType": "image/jpeg",
+    "size": 4391,
+    "width": 400,
+    "height": 300,
+    "tags": [
+      {
+        "name": "橙色",
+        "confidence": 0.9296197723082003,
+        "category": "color"
+      },
+      {
+        "name": "多彩",
+        "confidence": 0.8862441914535558,
+        "category": "color"
+      },
+      {
+        "name": "绿色",
+        "confidence": 0.734391300534969,
+        "category": "color"
+      },
+      {
+        "name": "艺术",
+        "confidence": 0.65,
+        "category": "style"
+      },
+      {
+        "name": "华丽",
+        "confidence": 0.58,
+        "category": "style"
+      },
+      {
+        "name": "汽车",
+        "confidence": 0.5399630797423068,
+        "category": "object"
+      },
+      {
+        "name": "电子产品",
+        "confidence": 0.5353692078773027,
+        "category": "object"
+      },
+      {
+        "name": "户外",
+        "confidence": 0.52,
+        "category": "scene"
+      }
+    ],
+    "description": "这是一张包含橙色、多彩、绿色的户外照片",
+    "categories": [
+      "户外",
+      "电子产品"
+    ],
+    "userTags": [],
+    "createdAt": 1781143618936,
+    "updatedAt": 1781143618936,
+    "hash": "img_rad50r_2r5"
+  },
+  {
+    "id": "9151cec7-2d81-48ac-802b-b32df7f78821",
+    "filename": "9151cec7-2d81-48ac-802b-b32df7f78821.jpg",
+    "originalName": "test_dark.jpg",
+    "path": "/Volumes/代码/solo/lp0025/server/uploads/9151cec7-2d81-48ac-802b-b32df7f78821.jpg",
+    "thumbnailPath": "/Volumes/代码/solo/lp0025/server/uploads/thumbnails/9151cec7-2d81-48ac-802b-b32df7f78821_thumb.jpg",
+    "mimeType": "image/jpeg",
+    "size": 886,
+    "width": 200,
+    "height": 200,
+    "tags": [
+      {
+        "name": "夜景",
+        "confidence": 0.82,
+        "category": "scene"
+      },
+      {
+        "name": "蓝色",
+        "confidence": 0.78,
+        "category": "color"
+      },
+      {
+        "name": "简约",
+        "confidence": 0.7,
+        "category": "style"
+      },
+      {
+        "name": "动物",
+        "confidence": 0.5888883260774294,
+        "category": "object"
+      },
+      {
+        "name": "现代",
+        "confidence": 0.58,
+        "category": "style"
+      },
+      {
+        "name": "植物",
+        "confidence": 0.4915654885637136,
+        "category": "object"
+      }
+    ],
+    "description": "画面以夜景、蓝色、简约为主，呈现简约的视觉风格",
+    "categories": [
+      "夜景",
+      "动物"
+    ],
+    "userTags": [],
+    "createdAt": 1781143619200,
+    "updatedAt": 1781143619200,
+    "hash": "img_k8kk5n_ei"
+  }
+]

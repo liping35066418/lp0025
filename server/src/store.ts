@@ -68,21 +68,36 @@ export class ImageStore {
 export class SimpleCache {
   private store: Map<string, CacheEntry<unknown>> = new Map();
   private defaultTtl = 5 * 60 * 1000;
+  private dirty = false;
+  private persistInterval: ReturnType<typeof setInterval> | null = null;
+  private static readonly PERSIST_INTERVAL_MS = 30_000;
 
   constructor() {
     this.load();
+    this.startAutoPersist();
   }
 
   private load() {
     const obj = readJSONFile<Record<string, CacheEntry<unknown>>>(PATHS.CACHE_JSON, {});
     this.store = new Map(Object.entries(obj));
     this.cleanup();
+    this.dirty = false;
+  }
+
+  private startAutoPersist() {
+    this.persistInterval = setInterval(() => {
+      if (this.dirty) {
+        this.persist();
+      }
+    }, SimpleCache.PERSIST_INTERVAL_MS);
+    this.persistInterval.unref?.();
   }
 
   private persist() {
     const obj: Record<string, CacheEntry<unknown>> = {};
     for (const [k, v] of this.store.entries()) obj[k] = v;
     writeJSONFile(PATHS.CACHE_JSON, obj);
+    this.dirty = false;
   }
 
   set<T>(key: string, data: T, ttl?: number) {
@@ -92,7 +107,7 @@ export class SimpleCache {
       expiresAt: Date.now() + t,
       createdAt: Date.now(),
     });
-    this.persist();
+    this.dirty = true;
   }
 
   get<T>(key: string): T | null {
@@ -100,19 +115,21 @@ export class SimpleCache {
     if (!entry) return null;
     if (Date.now() > entry.expiresAt) {
       this.store.delete(key);
-      this.persist();
+      this.dirty = true;
       return null;
     }
     return entry.data as T;
   }
 
   invalidate(pattern: string) {
+    let changed = false;
     for (const key of this.store.keys()) {
       if (key.includes(pattern)) {
         this.store.delete(key);
+        changed = true;
       }
     }
-    this.persist();
+    if (changed) this.dirty = true;
   }
 
   cleanup() {
@@ -124,8 +141,22 @@ export class SimpleCache {
         count++;
       }
     }
-    if (count > 0) this.persist();
+    if (count > 0) this.dirty = true;
     return count;
+  }
+
+  flush() {
+    if (this.dirty) {
+      this.persist();
+    }
+  }
+
+  shutdown() {
+    if (this.persistInterval) {
+      clearInterval(this.persistInterval);
+      this.persistInterval = null;
+    }
+    this.flush();
   }
 }
 
@@ -139,7 +170,7 @@ export class RateLimiter {
     this.windowMs = windowMs;
   }
 
-  check(key: string): { allowed: boolean; remaining: number; resetAt: number } {
+  check(key: string): { allowed: boolean; remaining: number; resetAt: number; limit: number } {
     const now = Date.now();
     let entry = this.windows.get(key);
 
@@ -155,6 +186,7 @@ export class RateLimiter {
       allowed,
       remaining: Math.max(0, this.maxRequests - entry.count),
       resetAt: entry.resetAt,
+      limit: this.maxRequests,
     };
   }
 }

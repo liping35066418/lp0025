@@ -40,10 +40,11 @@ function rateLimitMiddleware(limiter: RateLimiter, scope: string) {
   return (req: Request, res: Response, next: express.NextFunction) => {
     const key = `${scope}:${getClientIp(req)}`;
     const result = limiter.check(key);
-    res.setHeader('X-RateLimit-Limit', result.resetAt);
+    res.setHeader('X-RateLimit-Limit', result.limit.toString());
     res.setHeader('X-RateLimit-Remaining', result.remaining.toString());
     if (!result.allowed) {
-      return res.status(429).json({ error: '请求过于频繁，请稍后再试', retryAfter: result.resetAt });
+      const retrySeconds = Math.max(1, Math.ceil((result.resetAt - Date.now()) / 1000));
+      return res.status(429).json({ error: '请求过于频繁，请稍后再试', retryAfter: retrySeconds });
     }
     next();
   };
@@ -134,7 +135,7 @@ app.post('/api/recognize',
           const ext = '.jpg';
           const processed = await processImage(processPath, id, ext);
 
-          const recognition = aiEngine.recognize(buffer, file.originalname);
+          const recognition = await aiEngine.recognize(buffer, file.originalname);
 
           const record: ImageRecord = {
             id,
