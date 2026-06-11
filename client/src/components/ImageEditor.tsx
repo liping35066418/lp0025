@@ -9,13 +9,14 @@ interface Props {
   open: boolean;
   image: ImageRecord | null;
   onClose: () => void;
+  onSaved?: () => void;
   onSimilar?: (id: string) => void;
 }
 
 const CATEGORIES = ['户外', '室内', '海滩', '森林', '城市', '山脉', '夜景', '雪景', '日落', '办公室', '人物', '汽车', '建筑', '动物', '食物', '植物'];
 const PRESET_TAGS = ['高清', '特写', '远景', '自然', '人文', '旅行', '艺术', '设计', '复古', '现代', '生活', '美食'];
 
-export default function ImageEditor({ open, image, onClose, onSimilar }: Props) {
+export default function ImageEditor({ open, image, onClose, onSaved, onSimilar }: Props) {
   const updateImage = useAppStore(s => s.updateImage);
   const [tags, setTags] = useState<ImageTag[]>([]);
   const [userTags, setUserTags] = useState<string[]>([]);
@@ -72,6 +73,7 @@ export default function ImageEditor({ open, image, onClose, onSimilar }: Props) 
         description,
       });
       updateImage(res.data);
+      onSaved?.();
       onClose();
     } finally {
       setSaving(false);

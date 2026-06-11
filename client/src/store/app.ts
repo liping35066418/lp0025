@@ -5,14 +5,21 @@ import { api } from '../lib/api';
 interface AppState {
   images: ImageRecord[];
   total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  hasMore: boolean;
   loading: boolean;
+  loadingMore: boolean;
+  sortMode: string;
   searchResults: SearchResultItem[];
   selectedIds: Set<string>;
   stats: Stats | null;
   lastSearchQuery: string;
 
-  fetchImages: (page?: number, pageSize?: number) => Promise<void>;
+  fetchImages: (reset?: boolean) => Promise<void>;
   fetchStats: () => Promise<void>;
+  setSortMode: (mode: string) => void;
   setSearchResults: (r: SearchResultItem[]) => void;
   toggleSelect: (id: string) => void;
   selectAll: (ids: string[]) => void;
@@ -26,19 +33,43 @@ interface AppState {
 export const useAppStore = create<AppState>((set, get) => ({
   images: [],
   total: 0,
+  page: 1,
+  pageSize: 30,
+  totalPages: 0,
+  hasMore: true,
   loading: false,
+  loadingMore: false,
+  sortMode: 'newest',
   searchResults: [],
   selectedIds: new Set(),
   stats: null,
   lastSearchQuery: '',
 
-  fetchImages: async (page = 1, pageSize = 60) => {
-    set({ loading: true });
+  fetchImages: async (reset = true) => {
+    const { page: currentPage, pageSize, sortMode } = get();
+    const nextPage = reset ? 1 : currentPage + 1;
+
+    if (reset) {
+      set({ loading: true });
+    } else {
+      set({ loadingMore: true });
+    }
+
     try {
-      const res = await api.listImages(page, pageSize);
-      set({ images: res.items, total: res.total, loading: false });
+      const res = await api.listImages(nextPage, pageSize, sortMode);
+      const newImages = reset ? res.items : [...get().images, ...res.items];
+      set({
+        images: newImages,
+        total: res.total,
+        page: res.page,
+        pageSize: res.pageSize,
+        totalPages: res.totalPages,
+        hasMore: res.page < res.totalPages,
+        loading: false,
+        loadingMore: false,
+      });
     } catch (e) {
-      set({ loading: false });
+      set({ loading: false, loadingMore: false });
     }
   },
 
@@ -47,6 +78,10 @@ export const useAppStore = create<AppState>((set, get) => ({
       const s = await api.stats();
       set({ stats: s });
     } catch {}
+  },
+
+  setSortMode: (mode) => {
+    set({ sortMode: mode });
   },
 
   setSearchResults: (r) => set({ searchResults: r }),

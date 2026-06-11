@@ -82,7 +82,7 @@ app.get('/api/stats', (req, res) => {
   const stats = {
     totalImages: images.length,
     totalSize: images.reduce((s, i) => s + i.size, 0),
-    avgTags: images.length ? Math.round(images.reduce((s, i) => s + i.tags.length, 0) / images.length) : 0,
+    avgTags: images.length ? Math.round(images.reduce((s, i) => s + i.tags.length + i.userTags.length, 0) / images.length) : 0,
     userTagCount: images.reduce((s, i) => s + i.userTags.length, 0),
   };
 
@@ -183,12 +183,27 @@ app.post('/api/recognize',
 app.get('/api/images',
   rateLimitMiddleware(globalLimiter, 'global'),
   (req, res) => {
-    const { page = '1', pageSize = '30' } = req.query;
-    const cacheKey = `images:list:${page}:${pageSize}`;
+    const { page = '1', pageSize = '30', sort = 'newest' } = req.query;
+    const cacheKey = `images:list:${page}:${pageSize}:${sort}`;
     const cached = cache.get(cacheKey);
     if (cached) return res.json(cached);
 
-    const all = imageStore.getAll();
+    const all = [...imageStore.getAll()];
+    const sortMode = sort as string;
+    switch (sortMode) {
+      case 'oldest':
+        all.sort((a, b) => a.createdAt - b.createdAt);
+        break;
+      case 'size':
+        all.sort((a, b) => b.size - a.size);
+        break;
+      case 'tags':
+        all.sort((a, b) => (b.tags.length + b.userTags.length) - (a.tags.length + a.userTags.length));
+        break;
+      default:
+        all.sort((a, b) => b.createdAt - a.createdAt);
+    }
+
     const p = parseInt(page as string);
     const ps = parseInt(pageSize as string);
     const start = (p - 1) * ps;
@@ -246,6 +261,7 @@ app.put('/api/images/:id',
     const updated = imageStore.update(req.params.id, updates);
     cache.invalidate('images');
     cache.invalidate('search');
+    cache.invalidate('stats');
     res.json({ success: true, data: updated });
   }
 );
@@ -265,6 +281,7 @@ app.post('/api/images/batch-update',
     imageStore.batchUpdate(ids, safeUpdates);
     cache.invalidate('images');
     cache.invalidate('search');
+    cache.invalidate('stats');
     res.json({ success: true, updated: ids.length });
   }
 );

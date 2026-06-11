@@ -26,6 +26,7 @@ export default function ImageCard({ record, score, matchType, onEdit, onSimilar 
   const toggleSelect = useAppStore(s => s.toggleSelect);
   const selected = useAppStore(s => s.selectedIds.has(record.id));
   const removeImage = useAppStore(s => s.removeImage);
+  const fetchStats = useAppStore(s => s.fetchStats);
   const [deleting, setDeleting] = useState(false);
 
   const handleDelete = async (e: React.MouseEvent) => {
@@ -35,6 +36,7 @@ export default function ImageCard({ record, score, matchType, onEdit, onSimilar 
     try {
       await api.deleteImage(record.id);
       removeImage(record.id);
+      fetchStats();
     } finally {
       setDeleting(false);
     }

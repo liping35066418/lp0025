@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { Loader2, ImageIcon, Database, Hash, FileImage, Sparkles, Grid3X3, List, ArrowUpDown, Settings, Clock, CheckSquare, Layers, TrendingUp } from 'lucide-react';
 import UploadArea from '../components/UploadArea';
 import SearchBar from '../components/SearchBar';
@@ -18,6 +18,10 @@ export default function Home() {
   const images = useAppStore(s => s.images);
   const total = useAppStore(s => s.total);
   const loading = useAppStore(s => s.loading);
+  const loadingMore = useAppStore(s => s.loadingMore);
+  const hasMore = useAppStore(s => s.hasMore);
+  const sortMode = useAppStore(s => s.sortMode) as SortMode;
+  const setSortMode = useAppStore(s => s.setSortMode);
   const stats = useAppStore(s => s.stats);
   const addImages = useAppStore(s => s.addImages);
   const setSearchResults = useAppStore(s => s.setSearchResults);
@@ -38,14 +42,44 @@ export default function Home() {
   const [batchOpen, setBatchOpen] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [toast, setToast] = useState<{ msg: string; type: 'ok' | 'err' } | null>(null);
-  const [sortMode, setSortMode] = useState<SortMode>('newest');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [recentRecognition, setRecentRecognition] = useState<RecognizeResult[]>([]);
 
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
   useEffect(() => {
-    fetchImages();
+    fetchImages(true);
     fetchStats();
   }, []); // eslint-disable-line
+
+  const handleLoadMore = useCallback(() => {
+    if (!loadingMore && hasMore && searchResults.length === 0) {
+      fetchImages(false);
+    }
+  }, [loadingMore, hasMore, searchResults.length, fetchImages]);
+
+  useEffect(() => {
+    if (observerRef.current) observerRef.current.disconnect();
+    if (searchResults.length > 0) return;
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          handleLoadMore();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    if (loadMoreRef.current) {
+      observerRef.current.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) observerRef.current.disconnect();
+    };
+  }, [handleLoadMore, searchResults.length]);
 
   useEffect(() => {
     if (toast) {
@@ -55,6 +89,14 @@ export default function Home() {
   }, [toast]);
 
   const showToast = (msg: string, type: 'ok' | 'err' = 'ok') => setToast({ msg, type });
+
+  const handleSortChange = (mode: SortMode) => {
+    if (mode === sortMode) return;
+    setSortMode(mode);
+    if (searchResults.length === 0) {
+      fetchImages(true);
+    }
+  };
 
   const handleSubmit = async (files: File[], croppedMap: Record<string, { x: number; y: number; width: number; height: number }>) => {
     setProcessing(true);
@@ -133,17 +175,33 @@ export default function Home() {
   const displayItems = useMemo(() => {
     const list = searchResults.length > 0 ? searchResults.map(r => ({ img: r.image, score: r.score, match: r.matchType })) :
       images.map(img => ({ img, score: undefined as number | undefined, match: undefined as string | undefined }));
-    const arr = [...list];
-    switch (sortMode) {
-      case 'oldest': arr.sort((a, b) => a.img.createdAt - b.img.createdAt); break;
-      case 'size': arr.sort((a, b) => b.img.size - a.img.size); break;
-      case 'tags': arr.sort((a, b) => (b.img.tags.length + b.img.userTags.length) - (a.img.tags.length + a.img.userTags.length)); break;
-      default: arr.sort((a, b) => b.img.createdAt - a.img.createdAt);
+    if (searchResults.length > 0) {
+      const arr = [...list];
+      switch (sortMode) {
+        case 'oldest': arr.sort((a, b) => a.img.createdAt - b.img.createdAt); break;
+        case 'size': arr.sort((a, b) => b.img.size - a.img.size); break;
+        case 'tags': arr.sort((a, b) => (b.img.tags.length + b.img.userTags.length) - (a.img.tags.length + a.img.userTags.length)); break;
+        default: arr.sort((a, b) => b.img.createdAt - a.img.createdAt);
+      }
+      return arr;
     }
-    return arr;
+    return list;
   }, [images, searchResults, sortMode]);
 
   const currentTotal = searchResults.length > 0 ? searchResults.length : total;
+
+  const handleImageSaved = () => {
+    fetchStats();
+  };
+
+  const handleImageDeleted = () => {
+    fetchStats();
+  };
+
+  const handleBatchDone = () => {
+    fetchStats();
+    showToast('批量编辑已完成');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-zinc-100">
@@ -270,7 +328,7 @@ export default function Home() {
               ] as Array<{ v: SortMode; l: string; icon: string }>).map(o => (
                 <button
                   key={o.v}
-                  onClick={() => setSortMode(o.v)}
+                  onClick={() => handleSortChange(o.v)}
                   className={cn(
                     'px-3 py-1.5 rounded-md transition-all flex items-center gap-1',
                     sortMode === o.v ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
@@ -324,32 +382,66 @@ export default function Home() {
             )}
           </div>
         ) : viewMode === 'grid' ? (
-          <div className="grid gap-4 sm:gap-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
-            {displayItems.map(item => (
-              <ImageCard
-                key={item.img.id}
-                record={item.img}
-                score={item.score}
-                matchType={item.match}
-                onEdit={(img) => { setEditingImg(img); setEditorOpen(true); }}
-                onSimilar={handleOpenSimilar}
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid gap-4 sm:gap-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
+              {displayItems.map(item => (
+                <ImageCard
+                  key={item.img.id}
+                  record={item.img}
+                  score={item.score}
+                  matchType={item.match}
+                  onEdit={(img) => { setEditingImg(img); setEditorOpen(true); }}
+                  onSimilar={handleOpenSimilar}
+                />
+              ))}
+            </div>
+            <div ref={loadMoreRef} className="py-10 flex flex-col items-center justify-center">
+              {loadingMore && (
+                <div className="flex items-center gap-2 text-zinc-500">
+                  <Loader2 size={18} className="animate-spin text-indigo-400" />
+                  <span className="text-sm">加载更多...</span>
+                </div>
+              )}
+              {!loadingMore && !hasMore && searchResults.length === 0 && displayItems.length > 0 && (
+                <div className="text-sm text-zinc-600 flex items-center gap-2">
+                  <span className="w-12 h-px bg-zinc-800" />
+                  <span>已经到底啦</span>
+                  <span className="w-12 h-px bg-zinc-800" />
+                </div>
+              )}
+            </div>
+          </>
         ) : (
-          <div className="space-y-2">
-            {displayItems.map(item => (
-              <ListRow
-                key={item.img.id}
-                record={item.img}
-                score={item.score}
-                selected={selectedIds.has(item.img.id)}
-                onToggleSelect={() => useAppStore.getState().toggleSelect(item.img.id)}
-                onEdit={() => { setEditingImg(item.img); setEditorOpen(true); }}
-                onSimilar={() => handleOpenSimilar(item.img.id)}
-              />
-            ))}
-          </div>
+          <>
+            <div className="space-y-2">
+              {displayItems.map(item => (
+                <ListRow
+                  key={item.img.id}
+                  record={item.img}
+                  score={item.score}
+                  selected={selectedIds.has(item.img.id)}
+                  onToggleSelect={() => useAppStore.getState().toggleSelect(item.img.id)}
+                  onEdit={() => { setEditingImg(item.img); setEditorOpen(true); }}
+                  onSimilar={() => handleOpenSimilar(item.img.id)}
+                />
+              ))}
+            </div>
+            <div ref={loadMoreRef} className="py-10 flex flex-col items-center justify-center">
+              {loadingMore && (
+                <div className="flex items-center gap-2 text-zinc-500">
+                  <Loader2 size={18} className="animate-spin text-indigo-400" />
+                  <span className="text-sm">加载更多...</span>
+                </div>
+              )}
+              {!loadingMore && !hasMore && searchResults.length === 0 && displayItems.length > 0 && (
+                <div className="text-sm text-zinc-600 flex items-center gap-2">
+                  <span className="w-12 h-px bg-zinc-800" />
+                  <span>已经到底啦</span>
+                  <span className="w-12 h-px bg-zinc-800" />
+                </div>
+              )}
+            </div>
+          </>
         )}
       </main>
 
@@ -364,13 +456,14 @@ export default function Home() {
         open={editorOpen}
         image={editingImg}
         onClose={() => setEditorOpen(false)}
+        onSaved={handleImageSaved}
         onSimilar={(id) => { setEditorOpen(false); handleOpenSimilar(id); }}
       />
 
       <BatchEditor
         open={batchOpen}
         onClose={() => setBatchOpen(false)}
-        onDone={() => showToast('批量编辑已完成')}
+        onDone={handleBatchDone}
       />
 
       {toast && (

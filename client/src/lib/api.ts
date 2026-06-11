@@ -30,8 +30,8 @@ export const api = {
     }) as Promise<{ success: boolean; results: RecognizeResult[]; total: number }>;
   },
 
-  listImages: (page = 1, pageSize = 30) =>
-    request<PagedImages>(`/api/images?page=${page}&pageSize=${pageSize}`),
+  listImages: (page = 1, pageSize = 30, sort = 'newest') =>
+    request<PagedImages>(`/api/images?page=${page}&pageSize=${pageSize}&sort=${sort}`),
 
   getImage: (id: string) => request<ImageRecord>(`/api/images/${id}`),
 
